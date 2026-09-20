@@ -10,6 +10,96 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
+        /* Mobile & Tablet Responsive Adjustments */
+@media (max-width: 768px) {
+    nav {
+        padding: 1rem 5%;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero-section {
+        padding: 120px 5% 50px;
+    }
+
+    .brand-title {
+        font-size: 2.8rem;
+    }
+
+    .hero-slogan {
+        font-size: 1.2rem;
+    }
+
+    .hero-section p {
+        font-size: 0.95rem;
+    }
+
+    section {
+        padding: 50px 5%;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .category-filter {
+        gap: 0.5rem;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .albums-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .album-img-wrapper {
+        height: 240px;
+    }
+
+    .about-card, .contact-card {
+        grid-template-columns: 1fr;
+        padding: 1.8rem;
+        gap: 2rem;
+    }
+
+    .about-text h3, .contact-info h3 {
+        font-size: 1.5rem;
+    }
+
+    .modal-overlay {
+        padding: 1rem;
+    }
+
+    .album-title {
+        font-size: 1.6rem;
+    }
+
+    .album-gallery-container {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.8rem;
+        max-height: 75vh;
+    }
+
+    .album-photo {
+        height: 160px;
+    }
+
+    .fullscreen-close {
+        top: 15px;
+        right: 20px;
+        font-size: 2rem;
+    }
+}
         :root {
             --bg-color: #1a1817; 
             --section-bg: #242120;

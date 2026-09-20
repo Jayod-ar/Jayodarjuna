@@ -10,6 +10,72 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
+        /* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    nav {
+        top: 10px;
+        padding: 0.8rem 1.2rem;
+        width: 95%;
+    }
+
+    .logo {
+        font-size: 1.1rem;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero-section {
+        padding: 120px 5% 50px;
+        min-height: auto;
+    }
+
+    .hero-content h1 {
+        font-size: 2.1rem;
+    }
+
+    .hero-content p {
+        font-size: 0.95rem;
+    }
+
+    section {
+        padding: 50px 5%;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .about-card {
+        grid-template-columns: 1fr;
+        padding: 1.8rem;
+        gap: 2rem;
+    }
+
+    .about-text h3 {
+        font-size: 1.4rem;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .project-card {
+        border-radius: 16px;
+    }
+
+    .project-img {
+        height: 180px;
+    }
+
+    .contact-card {
+        grid-template-columns: 1fr;
+        padding: 1.8rem;
+        gap: 2rem;
+    }
+}
         :root {
             --bg-color: #030712;
             --card-bg: rgba(17, 24, 39, 0.7);
