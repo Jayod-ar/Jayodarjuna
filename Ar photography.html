@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Photography | Capturing Beautiful Memories</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #1a1817; 
+            --section-bg: #242120;
+            --card-bg: #2e2a28;
+            --primary-accent: #d4af37; /* Warm Gold */
+            --rose-accent: #e8c5c8; 
+            --text-dark: #f3efe6; 
+            --text-muted: #b3a79f;
+            --border-color: #423d3a;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo, .album-title, .brand-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(26, 24, 23, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.2rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo i {
+            color: var(--primary-accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-accent);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 190px 8% 90px;
+            text-align: center;
+            background: radial-gradient(circle at center, #292523 0%, var(--bg-color) 100%);
+        }
+
+        .brand-title {
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #f3efe6 20%, var(--primary-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .hero-slogan {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--primary-accent);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .hero-section p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        /* Section Layout */
+        section {
+            padding: 90px 8%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+        }
+
+        /* Category Filter Buttons */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 0.6rem 1.4rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-accent);
+            color: #1a1817;
+            border-color: var(--primary-accent);
+        }
+
+        /* Album Grid & Cards */
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .album-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .album-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.15);
+            border-color: var(--primary-accent);
+        }
+
+        .album-img-wrapper {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+        }
+
+        .album-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .album-card:hover .album-img {
+            transform: scale(1.08);
+        }
+
+        .category-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(26, 24, 23, 0.85);
+            border: 1px solid var(--primary-accent);
+            color: var(--primary-accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+        }
+
+        .album-info {
+            padding: 1.8rem;
+            text-align: center;
+        }
+
+        .album-title {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 0.4rem;
+        }
+
+        .album-count {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-open-album {
+            display: inline-block;
+            padding: 0.6rem 1.4rem;
+            border: 1px solid var(--primary-accent);
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+
+        .album-card:hover .btn-open-album {
+            background: var(--primary-accent);
+            color: #1a1817;
+        }
+
+        /* About Us Section */
+        .about-card {
+            background: var(--section-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .about-text h3 {
+            font-size: 2.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--primary-accent);
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .btn-fb-page {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.9rem 1.8rem;
+            border-radius: 30px;
+            background: #1877f2;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 15px rgba(24, 119, 242, 0.3);
+        }
+
+        .btn-fb-page:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(24, 119, 242, 0.45);
+        }
+
+        /* Contact Us Section */
+        .contact-card {
+            background: var(--section-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .contact-info h3 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-accent);
+        }
+
+        .contact-info p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.4rem;
+            border-radius: 12px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+
+        .contact-item i {
+            font-size: 1.3rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--section-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-item.whatsapp i { color: #25d366; }
+        .contact-item.phone i { color: var(--primary-accent); }
+        .contact-item.email i { color: #e8c5c8; }
+        .contact-item.facebook i { color: #1877f2; }
+        .contact-item.website i { color: #38bdf8; }
+
+        .contact-item:hover {
+            transform: translateX(6px);
+            border-color: var(--primary-accent);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-dark);
+            outline: none;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: var(--primary-accent);
+        }
+
+        .btn-submit {
+            padding: 1rem;
+            border-radius: 30px;
+            border: none;
+            background: var(--primary-accent);
+            color: #1a1817;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #e2be47;
+            transform: translateY(-2px);
+        }
+
+        /* Album Lightbox Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 24, 23, 0.96);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--primary-accent);
+        }
+
+        .album-gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            width: 100%;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .album-photo {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+
+        .album-photo:hover {
+            transform: scale(1.04);
+            border-color: var(--primary-accent);
+        }
+
+        /* Full Screen Overlay */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .fullscreen-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .fullscreen-img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .fullscreen-overlay.active .fullscreen-img {
+            transform: scale(1);
+        }
+
+        .fullscreen-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            font-size: 2.5rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .fullscreen-close:hover {
+            color: var(--primary-accent);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            background: #141212;
+        }
+
+        @media (max-width: 900px) {
+            .brand-title { font-size: 3.2rem; }
+            .hero-slogan { font-size: 1.4rem; }
+            .about-card, .contact-card { grid-template-columns: 1fr; padding: 2.5rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-camera"></i> AR Photography
+        </div>
+        <ul class="nav-links">
+            <li><a href="#albums">Albums</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="index.html">Main Portfolio</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="brand-title reveal">AR Photography</h1>
+        <div class="hero-slogan reveal">"Capturing Life’s Most Beautiful Moments in Timeless Elegance"</div>
+        <p class="reveal">Explore our categorized photo albums featuring individual shoots, wedding celebrations, and exclusive moments.</p>
+    </section>
+
+    <!-- Photo Albums Section -->
+    <section id="albums">
+        <div class="section-header reveal">
+            <h2>Our Photo Albums</h2>
+            <p>Filter by category and open any album to view individual photos</p>
+        </div>
+
+        <!-- Category Filter Buttons -->
+        <div class="category-filter reveal">
+            <button class="filter-btn active" onclick="filterAlbums('all')">All Albums</button>
+            <button class="filter-btn" onclick="filterAlbums('wedding')">Wedding</button>
+            <button class="filter-btn" onclick="filterAlbums('bridal')">Bridal</button>
+            <button class="filter-btn" onclick="filterAlbums('preshoot')">Preshoot</button>
+            <button class="filter-btn" onclick="filterAlbums('birthday')">Birthday</button>
+            <button class="filter-btn" onclick="filterAlbums('event')">Event</button>
+            <button class="filter-btn" onclick="filterAlbums('others')">Others</button>
+        </div>
+
+        <!-- Individual Album Cards Container -->
+        <div class="albums-grid">
+            
+            <!-- Wedding Album 1 -->
+            <div class="album-card reveal-left" data-category="wedding" onclick="openAlbum('Kasun & Amaya Wedding', [
+                'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80'
+            ])">
+                <div class="album-img-wrapper">
+                    <span class="category-tag">Wedding</span>
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Kasun & Amaya Wedding" class="album-img">
+                </div>
+                <div class="album-info">
+                    <h3 class="album-title">Kasun & Amaya</h3>
+                    <div class="album-count">3 Photos</div>
+                    <span class="btn-open-album">Open Album</span>
+                </div>
+            </div>
+
+            <!-- Wedding Album 2 -->
+            <div class="album-card reveal" data-category="wedding" onclick="openAlbum('The Royal Kandyan Wedding', [
+                'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80'
+            ])">
+                <div class="album-img-wrapper">
+                    <span class="category-tag">Wedding</span>
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="The Royal Kandyan Wedding" class="album-img">
+                </div>
+                <div class="album-info">
+                    <h3 class="album-title">Royal Kandyan Wedding</h3>
+                    <div class="album-count">2 Photos</div>
+                    <span class="btn-open-album">Open Album</span>
+                </div>
+            </div>
+
+            <!-- Bridal Album 1 -->
+            <div class="album-card reveal-right" data-category="bridal" onclick="openAlbum('Graceful Bridal Dressing Shoot', [
+                'https://images.unsplash.com/photo-1594552072238-b8a33785b261?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1546804784-896d0dca3814?auto=format&fit=crop&w=1200&q=80'
+            ])">
+                <div class="album-img-wrapper">
+                    <span class="category-tag">Bridal</span>
+                    <img src="https://images.unsplash.com/photo-1594552072238-b8a33785b261?auto=format&fit=crop&w=800&q=80" alt="Graceful Bridal Shoot" class="album-img">
+                </div>
+                <div class="album-info">
+                    <h3 class="album-title">Graceful Bridal Shoot</h3>
+                    <div class="album-count">2 Photos</div>
+                    <span class="btn-open-album">Open Album</span>
+                </div>
+            </div>
+
+            <!-- Preshoot Album 1 -->
+            <div class="album-card reveal-left" data-category="preshoot" onclick="openAlbum('Sunset Beach Love Preshoot', [
+                'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?auto=format&fit=crop&w=1200&q=80'
+            ])">
+                <div class="album-img-wrapper">
+                    <span class="category-tag">Preshoot</span>
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80" alt="Sunset Beach Preshoot" class="album-img">
+                </div>
+                <div class="album-info">
+                    <h3 class="album-title">Sunset Beach Love</h3>
+                    <div class="album-count">3 Photos</div>
+                    <span class="btn-open-album">Open Album</span>
+                </div>
+            </div>
+
+            <!-- Birthday Album 1 -->
+            <div class="album-card reveal" data-category="birthday" onclick="openAlbum('Nipuni 21st Grand Birthday Party', [
+                'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80'
+            ])">
+                <div class="album-img-wrapper">
+                    <span class="category-tag">Birthday</span>
+                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80" alt="Nipuni 21st Birthday" class="album-img">
+                </div>
+                <div class="album-info">
+                    <h3 class="album-title">Nipuni's 21st Birthday</h3>
+                    <div class="album-count">2 Photos</div>
+                    <span class="btn-open-album">Open Album</span>
+                </div>
+            </div>
+
+            <!-- Event Album 1 -->
+            <div class="album-card reveal-right" data-category="event" onclick="openAlbum('Faculty Annual Music Night 2026', [
+                'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80'
+            ])">
+                <div class="album-img-wrapper">
+                    <span class="category-tag">Event</span>
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Faculty Music Night" class="album-img">
+                </div>
+                <div class="album-info">
+                    <h3 class="album-title">Faculty Music Night</h3>
+                    <div class="album-count">2 Photos</div>
+                    <span class="btn-open-album">Open Album</span>
+                </div>
+            </div>
+
+            <!-- Others Album 1 -->
+            <div class="album-card reveal-left" data-category="others" onclick="openAlbum('Motorsport Speed Racing Shoot', [
+                'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
+            ])">
+                <div class="album-img-wrapper">
+                    <span class="category-tag">Others</span>
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80" alt="Motorsport Racing Shoot" class="album-img">
+                </div>
+                <div class="album-info">
+                    <h3 class="album-title">Motorsport Racing</h3>
+                    <div class="album-count">2 Photos</div>
+                    <span class="btn-open-album">Open Album</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <div class="section-header reveal">
+            <h2>About Us</h2>
+            <p>Our story and passion behind the lens</p>
+        </div>
+
+        <div class="about-card reveal">
+            <div class="about-text">
+                <h3>Crafting Story-Driven Photography</h3>
+                <p>AR Photography is dedicated to preserving genuine emotions and special highlights. We specialize in capturing weddings, pre-wedding sessions, and events with an elegant style.</p>
+                <p>Check out our Facebook page to view recent project updates, client galleries, and news.</p>
+
+                <a href="https://www.facebook.com/ARphotography02" target="_blank" class="btn-fb-page">
+                    <i class="fa-brands fa-facebook"></i> Visit Official Facebook Page
+                </a>
+            </div>
+
+            <div style="text-align: center;">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80" alt="Photography Gear" style="width: 100%; max-width: 420px; border-radius: 12px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact">
+        <div class="section-header reveal">
+            <h2>Contact Us</h2>
+            <p>Book your dates or get in touch for inquiries</p>
+        </div>
+
+        <div class="contact-card reveal">
+            <div class="contact-info">
+                <h3>Get In Touch</h3>
+                <p>Connect with us directly through WhatsApp, phone, email, or Facebook.</p>
+
+                <div class="contact-list">
+                    <a href="https://wa.me/94700000000" target="_blank" class="contact-item whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>WhatsApp (+94 70 000 0000)</span>
+                    </a>
+
+                    <a href="tel:+94700000000" class="contact-item phone">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>Call Us (+94 70 000 0000)</span>
+                    </a>
+
+                    <a href="mailto:contact@ar-photography.com" class="contact-item email">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>contact@ar-photography.com</span>
+                    </a>
+
+                    <a href="https://www.facebook.com/ARphotography02" target="_blank" class="contact-item facebook">
+                        <i class="fa-brands fa-facebook"></i>
+                        <span>Facebook Page</span>
+                    </a>
+
+                    <a href="index.html" class="contact-item website">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>Jayod Arjuna Website</span>
+                    </a>
+                </div>
+            </div>
+
+            <form class="contact-form" action="#" method="POST">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <input type="text" placeholder="Event / Category Type" required>
+                <textarea rows="4" placeholder="Your Message or Date Request" required></textarea>
+                <button type="submit" class="btn-submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Album Overlay Gallery Modal -->
+    <div class="modal-overlay" id="albumModal">
+        <div class="modal-close" onclick="closeAlbum()"><i class="fa-solid fa-xmark"></i></div>
+        <h3 class="album-title" id="modalTitle">Album Title</h3>
+        <div class="album-gallery-container" id="modalGallery"></div>
+    </div>
+
+    <!-- Full Screen Single Photo View Overlay -->
+    <div class="fullscreen-overlay" id="fullscreenOverlay">
+        <div class="fullscreen-close" onclick="closeFullscreen()"><i class="fa-solid fa-xmark"></i></div>
+        <img src="" alt="Full Screen Photo" class="fullscreen-img" id="fullscreenImg">
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 AR Photography. All rights reserved. | <a href="index.html" style="color: var(--primary-accent); text-decoration: none;">Back to Jayod Arjuna Portfolio</a></p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Scroll Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.15,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+            revealElements.forEach(el => observer.observe(el));
+        });
+
+        // Album Category Filter Function
+        function filterAlbums(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            event.target.classList.add('active');
+
+            const albumCards = document.querySelectorAll('.album-card');
+            albumCards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Album Gallery Overlay
+        function openAlbum(title, images) {
+            const modal = document.getElementById('albumModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalGallery = document.getElementById('modalGallery');
+
+            modalTitle.textContent = title;
+            modalGallery.innerHTML = '';
+
+            images.forEach(imgUrl => {
+                const img = document.createElement('img');
+                img.src = imgUrl;
+                img.className = 'album-photo';
+                img.alt = title;
+                img.onclick = () => openFullscreen(imgUrl);
+                modalGallery.appendChild(img);
+            });
+
+            modal.classList.add('active');
+        }
+
+        function closeAlbum() {
+            document.getElementById('albumModal').classList.remove('active');
+        }
+
+        // Full Screen Image Viewer
+        function openFullscreen(imgUrl) {
+            const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+            const fullscreenImg = document.getElementById('fullscreenImg');
+
+            fullscreenImg.src = imgUrl;
+            fullscreenOverlay.classList.add('active');
+        }
+
+        function closeFullscreen() {
+            document.getElementById('fullscreenOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
